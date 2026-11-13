@@ -48,7 +48,7 @@ export async function adminSession() {
   const user = await session();
   if (!user || user.role !== "admin") return null;
   await db();
-  const stored = await User.findById(user.id).select("_id role").lean();
+  const stored = await User.findById(user.id).select("_id role");
   return stored && stored.role === "admin" ? user : null;
 }
 export const isAdminEmail = (email: string) => (process.env.ADMIN_EMAILS || "").split(",").map(value => value.trim().toLowerCase()).filter(Boolean).includes(email.toLowerCase());
