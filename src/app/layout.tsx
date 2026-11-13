@@ -1,0 +1,7 @@
+import type { Metadata } from "next";
+import "./globals.css";
+import Navbar from "@/components/Navbar";
+import Link from "next/link";
+const siteUrl=process.env.NEXT_PUBLIC_SITE_URL||"https://dhanu-stream.example";
+export const metadata:Metadata={metadataBase:new URL(siteUrl),title:{default:"DHANU STREAM | Entertainment, Reimagined",template:"%s | DHANU STREAM"},description:"Discover movies, TV shows, sports and live entertainment with DHANU STREAM.",applicationName:"DHANU STREAM",openGraph:{title:"DHANU STREAM",description:"Entertainment, reimagined.",type:"website"}};
+export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="en"><body><Navbar/>{children}<footer className="site-footer"><div className="footer-brand">DHANU<span>STREAM</span></div><p>Your destination for stories worth discovering.</p><div className="footer-links"><Link href="/movies">Movies</Link><Link href="/tv">TV Shows</Link><Link href="/sports">Sports</Link><Link href="/live">Live TV</Link><Link href="/profile">Account</Link></div><small>© {new Date().getFullYear()} DHANU STREAM. Metadata powered by TMDB. Independent project, not endorsed or certified by TMDB.</small></footer></body></html>;}

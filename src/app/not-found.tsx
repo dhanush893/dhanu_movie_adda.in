@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default function NotFound(){return <main className="not-found page-shell"><span>404</span><h1>This story went off-script.</h1><p>The page you are looking for is unavailable or has moved.</p><Link href="/" className="button button-primary">Back to home</Link></main>;}
