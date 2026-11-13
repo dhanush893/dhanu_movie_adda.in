@@ -1,0 +1,2 @@
+import StreamUI from "@/components/StreamUI";
+export default async function Watch({params,searchParams}:{params:Promise<{id:string}>;searchParams:Promise<{type?:string}>}){const {id}=await params;const query=await searchParams;return <StreamUI view="watch" id={id} kind={query.type==="tv"?"tv":"movie"}/>;}
