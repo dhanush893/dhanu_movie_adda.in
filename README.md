@@ -10,8 +10,10 @@ A premium OTT discovery and account platform built with Next.js, MongoDB, server
 4. Configure TMDB_ACCESS_TOKEN (recommended) or TMDB_API_KEY.
 5. Configure MONGODB_URI.
 6. Set SESSION_SECRET to a private random value with at least 32 characters.
-7. Set ADMIN_EMAILS to comma-separated trusted admin email addresses.
-8. Run npm run dev and open http://localhost:3000.
+7. Set ADMIN_EMAILS to your trusted administrator email address(es).
+8. Set ADMIN_SETUP_KEY to a private setup secret (at least 24 random characters). Keep it out of source control.
+9. Run npm run dev and open http://localhost:3000.
+
 
 ## Features
 
