@@ -38,6 +38,10 @@ app.get('/api/home',wrap(async(req,res)=>{
  const results=await Promise.allSettled(requests.map(async([key,url,params])=>[key,await tmdb(url,{...params,page:1})]));
  const data={config};
  for(const item of results) if(item.status==='fulfilled') data[item.value[0]]=item.value[1].results||[];
+ if(config.featured?.length){
+  const featured=await Promise.allSettled(config.featured.slice(0,8).map(id=>tmdb(`/movie/${Number(id)}`)));
+  data.featuredMovies=featured.filter(x=>x.status==='fulfilled').map(x=>x.value);
+ }
  const failed=results.filter(x=>x.status==='rejected');
  if(!Object.keys(data).some(k=>Array.isArray(data[k])&&data[k].length)) throw failed[0]?.reason||new Error('No movie data available.');
  res.json(data);
@@ -58,7 +62,15 @@ app.get('/api/movie/:id',wrap(async(req,res)=>{
  ]);
  let streaming=null;
  if(process.env.WATCHMODE_API_KEY){
-  try{const r=await fetch(`https://api.watchmode.com/v1/title/${id}/sources/?apiKey=${process.env.WATCHMODE_API_KEY}&regions=IN`);if(r.ok)streaming=await r.json();}catch{}
+  try{
+   const key=process.env.WATCHMODE_API_KEY;
+   const lookup=await fetch(`https://api.watchmode.com/v1/search/?apiKey=${key}&search_field=tmdb_id&search_value=${id}`);
+   if(lookup.ok){
+    const found=await lookup.json();
+    const watchId=found.title_results?.[0]?.id;
+    if(watchId){const r=await fetch(`https://api.watchmode.com/v1/title/${watchId}/sources/?apiKey=${key}&regions=IN`);if(r.ok)streaming=await r.json();}
+   }
+  }catch{}
  }
  res.json({details,credits,videos,similar:similar.results||[],recommendations:recommendations.results||[],streaming});
 }));
