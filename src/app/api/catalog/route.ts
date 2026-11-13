@@ -4,6 +4,9 @@ export const revalidate = 300;
 export async function GET(request: NextRequest) {
   const mode = request.nextUrl.searchParams.get("mode") || "home";
   try {
+    if (mode === "home" && !process.env.TMDB_ACCESS_TOKEN && !process.env.TMDB_API_KEY) {
+      return Response.json({ error: "TMDB is not configured. Add TMDB_ACCESS_TOKEN or TMDB_API_KEY to the server environment." }, { status: 503 });
+    }
     if (mode === "home") {
       const paths = [
         ["trending", "/trending/movie/week", {}],
